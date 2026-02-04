@@ -1,0 +1,22 @@
+# Environment variables
+.env
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Python files
+__pycache__/
+*.pyc
+
+# Log files
+logs/
+*.log
+
+# Build files
+build/
+dist/

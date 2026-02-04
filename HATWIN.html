@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HotelVest - 智能投资顾问</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#1a365d',
+                        secondary: '#f8f5f0',
+                        accent: '#e6a23c',
+                        neutral: '#f5f5f5',
+                        'neutral-dark': '#333333',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                },
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .content-auto {
+                content-visibility: auto;
+            }
+            .bg-pattern {
+                background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+                background-size: 20px 20px;
+            }
+            .shadow-soft {
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            }
+        }
+    </style>
+</head>
+<body class="bg-neutral font-sans text-neutral-dark">
+    <div class="flex min-h-screen">
+        <!-- 左侧导航栏 -->
+        <aside class="w-64 bg-white border-r border-gray-200 flex flex-col">
+            <!-- Logo区域 -->
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-lg overflow-hidden">
+                        <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-bold text-primary">LAY AI</h1>
+                        <p class="text-xs text-gray-500">酒店投资风控参谋</p>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <!-- 会话管理 -->
+            <div class="flex-1 overflow-y-auto p-4">
+                <div class="space-y-3">
+                    <button class="w-full flex items-center space-x-3 px-4 py-3 bg-secondary rounded-lg hover:bg-gray-100 transition-colors">
+                        <i class="fa fa-plus text-gray-500"></i>
+                        <span class="text-sm font-medium">发起新咨询</span>
+                    </button>
+                    <button class="w-full flex items-center space-x-3 px-4 py-3 bg-primary bg-opacity-10 rounded-lg text-primary font-medium">
+                        <i class="fa fa-file-text-o"></i>
+                        <span class="text-sm">当前底稿生成</span>
+                    </button>
+                    <button class="w-full flex items-center space-x-3 px-4 py-3 hover:bg-gray-100 rounded-lg transition-colors">
+                        <i class="fa fa-folder-open text-gray-500"></i>
+                        <span class="text-sm">过往投资案</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- 用户信息 -->
+            <div class="p-4 border-t border-gray-200">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+                        JS
+                    </div>
+                    <div class="flex-1">
+                        <p class="text-sm font-medium">Jason</p>
+                        <p class="text-xs text-gray-500">酒店准业主</p>
+                    </div>
+                    <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                        <i class="fa fa-chevron-down"></i>
+                    </button>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 右侧主内容区 -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <!-- 顶部标题栏 -->
+            <header class="bg-white border-b border-gray-200 p-6">
+                <div class="flex justify-between items-center">
+                    <div>
+                        
+                    </div>
+                    <div class="flex items-center space-x-3">
+                        <button class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors flex items-center space-x-2">
+                            <i class="fa fa-share-alt text-gray-600"></i>
+                            <span class="text-sm">分享底稿</span>
+                        </button>
+                        <button class="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center space-x-2">
+                            <i class="fa fa-file-pdf-o"></i>
+                            <span class="text-sm">导出完整PDF</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 主要内容 -->
+            <div class="flex-1 overflow-y-auto p-8 bg-pattern">
+                <div class="max-w-3xl mx-auto space-y-8">
+                    
+
+                    
+
+                    <!-- 聊天历史 -->
+                    <div id="chat-history" class="space-y-6">
+                        <!-- 消息将通过 JavaScript 动态添加 -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- 输入区域 -->
+            <footer class="bg-white border-t border-gray-200 p-4">
+                <div class="max-w-3xl mx-auto">
+                    <div class="mb-2">
+                        <p class="text-xs text-gray-400 text-center">LAY AI 生成的观点仅供决策参考，投资有风险，入局需谨慎。</p>
+                    </div>
+                    <form id="chat-form" class="flex items-center space-x-3">
+                        <div class="flex-1 relative">
+                            <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                                <i class="fa fa-plus-circle"></i>
+                            </div>
+                            <input 
+                                type="text" 
+                                id="user-input" 
+                                placeholder="输入城市+物业情况，例如：'我想在杭州西湖边租个老别墅做民宿，房东报价很低...'" 
+                                class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                            >
+                        </div>
+                        <button 
+                            type="submit" 
+                            class="w-10 h-10 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center"
+                        >
+                            <i class="fa fa-arrow-up"></i>
+                        </button>
+                    </form>
+                </div>
+            </footer>
+        </main>
+    </div>
+
+    <!-- API Key设置模态框 -->
+    <div id="api-key-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl p-6 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold">设置API Key</h3>
+                <button id="close-modal" class="text-gray-500 hover:text-gray-700">
+                    <i class="fa fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">DashScope API Key</label>
+                    <input 
+                        type="text" 
+                        id="api-key-input" 
+                        placeholder="sk-xxxxxxxx" 
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                    >
+                </div>
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
+                    <p class="text-sm text-gray-700">
+                        <strong>安全提示：</strong> API Key将存储在您的本地浏览器中，仅用于本地测试。请勿在公共网络或共享设备上使用此功能。
+                    </p>
+                </div>
+                <div class="flex space-x-3">
+                    <button id="save-api-key" class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">
+                        保存
+                    </button>
+                    <button id="cancel-api-key" class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+                        取消
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 阿里DashScope API配置
+        const ALI_API_CONFIG = {
+            appId: '54ba0b8489d64e458a9e405a95bf047a',
+            apiUrl: 'https://dashscope.aliyuncs.com/api/v1/apps/54ba0b8489d64e458a9e405a95bf047a/completion',
+            apiKey: localStorage.getItem('ALI_API_KEY') || window.ALI_API_KEY || '' // 优先从localStorage读取API Key
+        };
+
+        // 调用阿里DashScope API
+        async function callAliAPI(prompt) {
+            try {
+                // 检查API Key是否设置
+                if (!ALI_API_CONFIG.apiKey) {
+                    console.error('API Key未设置，请在浏览器控制台运行: window.ALI_API_KEY = "your_api_key"');
+                    return null;
+                }
+                
+                const response = await fetch(ALI_API_CONFIG.apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${ALI_API_CONFIG.apiKey}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        input: {
+                            prompt: prompt
+                        },
+                        parameters: {},
+                        debug: {}
+                    })
+                });
+                
+                if (!response.ok) {
+                    console.error('API调用失败:', response.status, await response.text());
+                    return null;
+                }
+                
+                const data = await response.json();
+                return data;
+            } catch (error) {
+                console.error('API调用失败:', error);
+                return null;
+            }
+        }
+
+        // 应用状态管理
+        class LayAIBackend {
+            constructor() {
+                this.state = "IDLE";
+                this.history = [];
+            }
+
+            async getResponse(userInput) {
+                // 状态机逻辑
+                const currentState = this.state;
+                
+                // 1. IDLE -> DIAGNOSTIC (智商税测试启动)
+                if (currentState === "IDLE") {
+                    this.state = "DIAGNOSTIC_WAITING";
+                    
+                    // 调用阿里API获取欢迎消息
+                    const prompt = "你是LAY，一个毒舌、专业的酒店投资风控参谋。请用中文欢迎用户Jason，介绍你的身份和功能，强调你能帮助用户避免投资陷阱。";
+                    const apiResponse = await callAliAPI(prompt);
+                    
+                    let content = "你好，在当前的投资周期下，在不确定的时代寻找确定性。我们不看表面的繁荣，只看数据背后的逻辑。无论是一线城市的核心商圈，还是下沉市场的机会点，帮大家剥离噪音，验证每一个项目的真实获利底色。告诉我，今天我们把脉哪个城市市场机会，或者哪个项目投资可行性？我来帮你做一次\"核磁共振\"式的诊断。";
+                    
+                    if (apiResponse && apiResponse.output) {
+                        content = apiResponse.output.text || content;
+                    }
+                    
+                    return `
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-lg overflow-hidden">
+                                    <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-white rounded-xl p-5 shadow-soft">
+                                    <p class="text-gray-700">${content}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 2. DIAGNOSTIC -> ANALYSIS (测试反馈与分析)
+                else if (currentState === "DIAGNOSTIC_WAITING") {
+                    const input = userInput.toUpperCase();
+                    if (!["A", "B", "C"].includes(input)) {
+                        return `
+                            <div class="flex items-start space-x-4">
+                                <div class="flex-shrink-0">
+                                    <div class="w-10 h-10 rounded-lg overflow-hidden">
+                                        <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                                    </div>
+                                </div>
+                                <div class="flex-1">
+                                    <div class="bg-white rounded-xl p-5 shadow-soft">
+                                        <p class="text-gray-700">在当前的投资周期下，在不确定的时代寻找确定性。 我们不看表面的繁荣，只看数据背后的逻辑。无论是一线城市的核心商圈，还是下沉市场的机会点，帮你剥离噪音，验证每一个项目的真实获利底色</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    // 调用阿里API获取测试反馈
+                    const prompt = `用户在智商税测试中选择了${input}。请作为LAY，一个毒舌、专业的酒店投资风控参谋，给出测试反馈，然后引导用户提供具体的投资意向（城市、预算、酒店类型）。`;
+                    const apiResponse = await callAliAPI(prompt);
+                    
+                    let response = "";
+                    if (input === "B") {
+                        response = "<p class='text-gray-700'><strong>勉强及格。</strong> 但你知道流水可以造假吗？你知道OTA差评可以被\"技术处理\"吗？不过你至少没那么天真。</p>";
+                    } else {
+                        response = "<p class='text-gray-700'><strong>典型韭菜。</strong> 选A的是给房东接盘装修垃圾的；选C的是患了'自信幻觉症'的。记住：好店不需要转让，转让的都是坑。</p>";
+                    }
+                    
+                    if (apiResponse && apiResponse.output) {
+                        response = `<p class='text-gray-700'>${apiResponse.output.text}</p>`;
+                    }
+                    
+                    this.state = "ANALYSIS";
+                    response += "<p class='mt-3 text-gray-700'>测试结束。现在告诉我，<strong>你想在哪个城市，投资多少钱，做什么类型的酒店？</strong> (例如：我想在长沙开一家以电竞为主题的酒店，预算200万)</p>";
+                    
+                    return `
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-lg overflow-hidden">
+                                    <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-white rounded-xl p-5 shadow-soft">
+                                    ${response}
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 3. ANALYSIS -> GENERATING (城市路由与生成)
+                else if (currentState === "ANALYSIS") {
+                    const city = this.extractCity(userInput);
+                    const tier = this.getCityTier(city);
+                    const templateType = tier === "Tier1" ? "【一线城市高周转模板】" : "【通用生存模板】";
+                    
+                    this.state = "GENERATING";
+                    
+                    // 调用阿里API获取城市分析
+                    const prompt = `用户想在${userInput}投资酒店。请作为LAY，一个毒舌、专业的酒店投资风控参谋，分析该城市的酒店市场，提供专业的投资建议，强调风险控制。`;
+                    const apiResponse = await callAliAPI(prompt);
+                    
+                    let analysisContent = `收到。识别城市：<strong class="text-primary">${city}</strong>，判定等级：<strong class="text-primary">${tier}</strong> -> 调用 ${templateType}。正在根据"智商税破壁模型"检索 ${city} 的竞品数据...正在调用"系统性废弃"模型优化成本结构...`;
+                    
+                    if (apiResponse && apiResponse.output) {
+                        analysisContent = apiResponse.output.text || analysisContent;
+                    }
+                    
+                    return `
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-lg overflow-hidden">
+                                    <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-white rounded-xl p-5 shadow-soft">
+                                    <p class="text-gray-700">${analysisContent}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                // 4. PAUSED -> RESUMED (断点续写)
+                else if (currentState === "GENERATING") {
+                    // 调用阿里API获取财务测算
+                    const prompt = "用户要求继续查看财务测算表。请作为LAY，一个毒舌、专业的酒店投资风控参谋，提供详细的财务测算和风险分析，强调投资风险和风控措施。";
+                    const apiResponse = await callAliAPI(prompt);
+                    
+                    let content = "P4. 财务测算 (FMEA风控版)。【风险对冲分析】你的回本周期模型建立在入住率 85% 的假设上。如果不幸遇到不可抗力（参考2020年），入住率跌至 40%，你的现金流能撑几个月？";
+                    
+                    if (apiResponse && apiResponse.output) {
+                        content = apiResponse.output.text || content;
+                    }
+                    
+                    return `
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-10 h-10 rounded-lg overflow-hidden">
+                                    <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                                </div>
+                            </div>
+                            <div class="flex-1">
+                                <div class="bg-white rounded-xl p-5 shadow-soft">
+                                    <p class="text-gray-700">${content}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                
+                return `
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 rounded-lg overflow-hidden">
+                                <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-white rounded-xl p-5 shadow-soft">
+                                <p class="text-gray-700">系统异常，请刷新。</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            extractCity(text) {
+                if (text.includes("北京") || text.includes("上海")) return "上海";
+                if (text.includes("长沙")) return "长沙";
+                return "未知城市";
+            }
+
+            getCityTier(city) {
+                const tier1 = ["北京", "上海", "广州", "深圳"];
+                if (tier1.includes(city)) return "Tier1";
+                return "General";
+            }
+
+            addMessage(role, content) {
+                this.history.push({ role, content });
+            }
+        }
+
+        // 初始化应用
+        const backend = new LayAIBackend();
+        const chatHistory = document.getElementById('chat-history');
+        const chatForm = document.getElementById('chat-form');
+        const userInput = document.getElementById('user-input');
+
+        // 添加消息到界面
+        function addMessageToUI(role, content) {
+            if (role === 'user') {
+                const userMessage = `
+                    <div class="flex items-start justify-end space-x-4">
+                        <div class="flex-1 max-w-[70%]">
+                            <div class="bg-primary rounded-xl p-5 shadow-soft">
+                                <p class="text-white">${content}</p>
+                            </div>
+                        </div>
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 rounded-full bg-primary text-white flex items-center justify-center font-bold">
+                                JS
+                            </div>
+                        </div>
+                    </div>
+                `;
+                chatHistory.insertAdjacentHTML('beforeend', userMessage);
+            } else {
+                chatHistory.insertAdjacentHTML('beforeend', content);
+            }
+            // 滚动到底部
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // 显示加载状态
+        function showLoading() {
+            const loadingMessage = `
+                <div id="loading-message" class="flex items-start space-x-4">
+                    <div class="flex-shrink-0">
+                        <div class="w-10 h-10 rounded-lg bg-primary flex items-center justify-center">
+                            <i class="fa fa-diamond text-white"></i>
+                        </div>
+                    </div>
+                    <div class="flex-1">
+                        <div class="bg-white rounded-xl p-5 shadow-soft">
+                            <p class="text-gray-500">(HotelVest 正在分析市场数据和投资模型...)</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            chatHistory.insertAdjacentHTML('beforeend', loadingMessage);
+            chatHistory.scrollTop = chatHistory.scrollHeight;
+        }
+
+        // 移除加载状态
+        function removeLoading() {
+            const loadingMessage = document.getElementById('loading-message');
+            if (loadingMessage) {
+                loadingMessage.remove();
+            }
+        }
+
+        // 初始化欢迎消息
+        async function initWelcomeMessage() {
+            // 检查API Key是否设置
+            if (!ALI_API_CONFIG.apiKey) {
+                // API Key未设置，显示默认消息
+                const defaultMessage = `
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 rounded-lg overflow-hidden">
+                                <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-white rounded-xl p-5 shadow-soft">
+                                <p class="text-gray-700">你好，在当前的投资周期下，在不确定的时代寻找确定性。我们不看表面的繁荣，只看数据背后的逻辑。无论是一线城市的核心商圈，还是下沉市场的机会点，帮大家剥离噪音，验证每一个项目的真实获利底色。告诉我，今天我们把脉哪个城市市场机会，或者哪个项目投资可行性？我来帮你做一次"核磁共振"式的诊断。</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                addMessageToUI('assistant', defaultMessage);
+                return;
+            }
+
+            try {
+                const welcomeMessage = await backend.getResponse("");
+                addMessageToUI('assistant', welcomeMessage);
+            } catch (error) {
+                console.error('初始化消息失败:', error);
+                const defaultMessage = `
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 rounded-lg overflow-hidden">
+                                <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-white rounded-xl p-5 shadow-soft">
+                                <p class="text-gray-700">你好，在当前的投资周期下，在不确定的时代寻找确定性。我们不看表面的繁荣，只看数据背后的逻辑。无论是一线城市的核心商圈，还是下沉市场的机会点，帮大家剥离噪音，验证每一个项目的真实获利底色。告诉我，今天我们把脉哪个城市市场机会，或者哪个项目投资可行性？我来帮你做一次"核磁共振"式的诊断。</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                addMessageToUI('assistant', defaultMessage);
+            }
+        }
+
+        // 处理表单提交
+        chatForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const input = userInput.value.trim();
+            if (!input) return;
+
+            // 添加用户消息
+            addMessageToUI('user', input);
+            backend.addMessage('user', input);
+            userInput.value = '';
+
+            // 显示加载状态
+            showLoading();
+
+            try {
+                // 调用异步方法获取响应
+                const response = await backend.getResponse(input);
+                removeLoading();
+                addMessageToUI('assistant', response);
+                backend.addMessage('assistant', response);
+            } catch (error) {
+                console.error('获取响应失败:', error);
+                removeLoading();
+                const errorMessage = `
+                    <div class="flex items-start space-x-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-10 h-10 rounded-lg overflow-hidden">
+                                <img src="LAY.jpg" alt="LAY AI" class="w-full h-full object-cover">
+                            </div>
+                        </div>
+                        <div class="flex-1">
+                            <div class="bg-white rounded-xl p-5 shadow-soft">
+                                <p class="text-gray-700">API调用失败，请稍后重试。</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                addMessageToUI('assistant', errorMessage);
+            }
+        });
+
+        // API Key设置功能
+        function setupApiKeyManagement() {
+            const modal = document.getElementById('api-key-modal');
+            const apiKeyInput = document.getElementById('api-key-input');
+            const saveButton = document.getElementById('save-api-key');
+            const cancelButton = document.getElementById('cancel-api-key');
+            const closeButton = document.getElementById('close-modal');
+
+            // 显示模态框
+            function showModal() {
+                modal.classList.remove('hidden');
+            }
+
+            // 隐藏模态框
+            function hideModal() {
+                modal.classList.add('hidden');
+            }
+
+            // 保存API Key
+            function saveApiKey() {
+                const apiKey = apiKeyInput.value.trim();
+                if (apiKey) {
+                    localStorage.setItem('ALI_API_KEY', apiKey);
+                    ALI_API_CONFIG.apiKey = apiKey;
+                    hideModal();
+                    // 刷新页面以应用新的API Key
+                    location.reload();
+                } else {
+                    alert('请输入有效的API Key');
+                }
+            }
+
+            // 事件监听器
+            saveButton.addEventListener('click', saveApiKey);
+            cancelButton.addEventListener('click', hideModal);
+            closeButton.addEventListener('click', hideModal);
+
+            // 点击模态框外部关闭
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    hideModal();
+                }
+            });
+
+            // 检查API Key是否设置
+            if (!ALI_API_CONFIG.apiKey) {
+                showModal();
+            }
+
+            // 添加设置按钮到界面
+            const header = document.querySelector('header');
+            if (header) {
+                const settingsButton = document.createElement('button');
+                settingsButton.innerHTML = '<i class="fa fa-cog"></i>';
+                settingsButton.className = 'px-3 py-2 bg-secondary rounded-lg hover:bg-gray-700 transition-colors text-white';
+                settingsButton.title = '设置API Key';
+                settingsButton.addEventListener('click', showModal);
+                
+                const headerRight = header.querySelector('.flex.items-center.space-x-3');
+                if (headerRight) {
+                    headerRight.appendChild(settingsButton);
+                }
+            }
+        }
+
+        // 初始化应用
+        document.addEventListener('DOMContentLoaded', function() {
+            setupApiKeyManagement();
+            initWelcomeMessage();
+        });
+    </script>
+</body>
+</html>
