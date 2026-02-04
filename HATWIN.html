@@ -258,7 +258,7 @@
                     const prompt = "你是LAY，一个毒舌、专业的酒店投资风控参谋。请用中文欢迎用户Jason，介绍你的身份和功能，强调你能帮助用户避免投资陷阱。";
                     const apiResponse = await callAliAPI(prompt);
                     
-                    let content = "你好，在当前的投资周期下，在不确定的时代寻找确定性。我们不看表面的繁荣，只看数据背后的逻辑。无论是一线城市的核心商圈，还是下沉市场的机会点，帮大家剥离噪音，验证每一个项目的真实获利底色。告诉我，今天我们把脉哪个城市市场机会，或者哪个项目投资可行性？我来帮你做一次\"核磁共振\"式的诊断。";
+                    let content = "正在获取AI响应...";
                     
                     if (apiResponse && apiResponse.output) {
                         content = apiResponse.output.text || content;
@@ -293,7 +293,7 @@
                                 </div>
                                 <div class="flex-1">
                                     <div class="bg-white rounded-xl p-5 shadow-soft">
-                                        <p class="text-gray-700">在当前的投资周期下，在不确定的时代寻找确定性。 我们不看表面的繁荣，只看数据背后的逻辑。无论是一线城市的核心商圈，还是下沉市场的机会点，帮你剥离噪音，验证每一个项目的真实获利底色</p>
+                                        <p class="text-gray-700">请输入 A, B 或 C 进行选择。</p>
                                     </div>
                                 </div>
                             </div>
@@ -502,7 +502,7 @@
                         </div>
                         <div class="flex-1">
                             <div class="bg-white rounded-xl p-5 shadow-soft">
-                                <p class="text-gray-700">你好，在当前的投资周期下，在不确定的时代寻找确定性。我们不看表面的繁荣，只看数据背后的逻辑。无论是一线城市的核心商圈，还是下沉市场的机会点，帮大家剥离噪音，验证每一个项目的真实获利底色。告诉我，今天我们把脉哪个城市市场机会，或者哪个项目投资可行性？我来帮你做一次"核磁共振"式的诊断。</p>
+                                <p class="text-gray-700">请先设置API Key以获取AI响应。</p>
                             </div>
                         </div>
                     </div>
@@ -525,7 +525,7 @@
                         </div>
                         <div class="flex-1">
                             <div class="bg-white rounded-xl p-5 shadow-soft">
-                                <p class="text-gray-700">你好，在当前的投资周期下，在不确定的时代寻找确定性。我们不看表面的繁荣，只看数据背后的逻辑。无论是一线城市的核心商圈，还是下沉市场的机会点，帮大家剥离噪音，验证每一个项目的真实获利底色。告诉我，今天我们把脉哪个城市市场机会，或者哪个项目投资可行性？我来帮你做一次"核磁共振"式的诊断。</p>
+                                <p class="text-gray-700">API调用失败，请检查API Key是否正确。</p>
                             </div>
                         </div>
                     </div>
