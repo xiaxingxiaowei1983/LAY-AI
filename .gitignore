@@ -27,3 +27,6 @@ package-lock.json
 
 .vercel
 .env*.local
+
+# Trae IDE files
+.trae/
